@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "pwsg2.h"
+#include "lab1.h"
 
 #define MAX_LOADSTRING 100
 #define SQUARE 25
