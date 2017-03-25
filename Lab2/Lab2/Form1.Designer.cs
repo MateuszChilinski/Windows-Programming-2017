@@ -21,7 +21,7 @@
         }
 
         #region Windows Form Designer generated code
-        System.Windows.Forms.Button[] buttons = new System.Windows.Forms.Button[17];
+        
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -45,23 +45,8 @@
             this.button14 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
-            
-            buttons[1] = button1;
-            buttons[2] = button2;
-            buttons[3] = button3;
-            buttons[4] = button4;
-            buttons[5] = button5;
-            buttons[6] = button6;
-            buttons[7] = button7;
-            buttons[8] = button8;
-            buttons[9] = button9;
-            buttons[10] = button10;
-            buttons[11] = button11;
-            buttons[12] = button12;
-            buttons[13] = button13;
-            buttons[14] = button14;
-            buttons[15] = button15;
-            buttons[16] = button16;
+
+
 
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -473,6 +458,7 @@
             this.Text = "Puzzle Game";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
