@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,8 @@ namespace Lab2
         int guessedButtons = 0;
         int activeButtons = 0;
         bool[,] active = new bool[5,5];
+        Queue<Button> toDisable = new Queue<Button>();
+        Timer mainTimer;
         status gameMode;
         System.Windows.Forms.Label[,] labels = new System.Windows.Forms.Label[2,5]; // 0->x 1->y
         System.Windows.Forms.Button[,] buttons = new System.Windows.Forms.Button[5, 5];
@@ -59,6 +62,7 @@ namespace Lab2
         private void endGame()
         {
             gameMode = status.LOST;
+            mainTimer.Stop();
             string message =
 "Your final score is " + score.ToString() + ".";
             const string caption = "End of game";
@@ -68,7 +72,11 @@ namespace Lab2
         }
         public Form1()
         {
+            mainTimer = new Timer();
+            mainTimer.Tick += new EventHandler(CountDown);
+            mainTimer.Interval = 1000;
             InitializeComponent();
+            progressBar1.Value = maxSec;
             buttons[1, 1] = button1;
             buttons[2, 1] = button2;
             buttons[3, 1] = button3;
@@ -146,9 +154,15 @@ namespace Lab2
                         else if(!active[x, y])
                         {
                             currButton.BackColor = System.Drawing.Color.Red;
+                            currButton.Text = "";
                             lifes--;
                             label9.Text = "Lifes: " + lifes.ToString();
-                            if(lifes == 0)
+                            toDisable.Enqueue(currButton);
+                            Timer t = new Timer();
+                            t.Interval = 500;
+                            t.Tick += new EventHandler(Unred);
+                            t.Start();
+                            if (lifes == 0)
                             {
                                 endGame();
                             }
@@ -159,7 +173,7 @@ namespace Lab2
                 case MouseButtons.Right:
                     if (gameMode == status.EDIT)
                     {
-                        active[x, y] = true;
+                        active[x, y] = false;
                         currButton.BackColor = System.Drawing.Color.White;
                         return;
                     }
@@ -169,6 +183,25 @@ namespace Lab2
             }
             
         }
+        private void Unred(object sender, EventArgs e)
+        {
+            Timer timer = (Timer)sender;
+            Button tempButton = toDisable.Dequeue();
+            tempButton.BackColor = System.Drawing.Color.RoyalBlue;
+            tempButton.Text = "?";
+            timer.Stop();
+        }
+        private void CountDown(object sender, EventArgs e)
+        {
+            if(--currSec == 0)
+            {
+                endGame();
+            }
+            if(currSec >= 0)
+                progressBar1.Value = currSec;
+
+        }
+
         private void button_hover(object sender, EventArgs e)
         {
             Button currButton = (Button)sender;
@@ -189,10 +222,15 @@ namespace Lab2
         }
         private void newGame(bool loaded=false)
         {
+            mainTimer.Start();
             refresheButtons();
+            progressBar1.Maximum = maxSec;
+            progressBar1.Value = maxSec;
+            currSec = maxSec;
             activeButtons = 0;
             guessedButtons = 0;
             lifes = maxLifes;
+            label9.Text = "Lifes: " + lifes.ToString();
             Random rnd = new Random();
             for(int i = 1; i<=4; i++)
             {
@@ -219,6 +257,10 @@ namespace Lab2
         }
         private void edit()
         {
+            this.newGameToolStripMenuItem.Enabled = false;
+            this.openToolStripMenuItem.Enabled = false;
+            this.settingsToolStripMenuItem.Enabled = false;
+            this.saveToolStripMenuItem.Enabled = true;
             activeButtons = 0;
             guessedButtons = 0;
             lifes = maxLifes;
@@ -240,6 +282,8 @@ namespace Lab2
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             gameMode = status.NORMAL;
+            score = 0;
+            label10.Text = "Score: " + score.ToString();
             newGame();
         }
         private void Form1_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
@@ -259,29 +303,107 @@ namespace Lab2
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Form2 dialbox = new Form2())
+            mainTimer.Stop();
+            using (Form2 dialog = new Form2())
             {
-                dialbox.Show();
+                dialog.Life = maxLifes;
+                dialog.Time = maxSec;
+                DialogResult result = dialog.ShowDialog();
+
+                if(result == DialogResult.OK)
+                {
+                    maxLifes = dialog.Life;
+                    maxSec = dialog.Time;
+                    gameMode = status.LOST;
+                    label9.Text = "Lifes: " + maxLifes.ToString();
+                    mainTimer.Stop();
+                    return;
+                }
+                
             }
+            mainTimer.Start();
             // somehow handle the DisplayResult, google
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             gameMode = status.EDIT;
+            this.gameToolStripMenuItem.Checked = false;
+            this.editToolStripMenuItem.Checked = true;
+            this.menuStrip1.BackColor = Color.Gold;
             edit();
         }
 
         private void gameToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.gameToolStripMenuItem.Checked = true;
+            this.newGameToolStripMenuItem.Enabled = true;
+            this.openToolStripMenuItem.Enabled = true;
+            this.settingsToolStripMenuItem.Enabled = true;
+            this.saveToolStripMenuItem.Enabled = false;
+            this.editToolStripMenuItem.Checked = false;
+            this.menuStrip1.BackColor = SystemColors.Control;
             gameMode = status.NORMAL;
             newGame(true);
         }
-        private void timerDisplay()
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(currSec == 0)
+            StreamReader myStream;
+            int i = 1, j = 1;
+            using (var selectFileDialog = new OpenFileDialog())
             {
-                endGame();
+                if (selectFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    using (myStream = new StreamReader(selectFileDialog.FileName))
+                    {
+                        while (j < 5)
+                        {
+                            int currStat = myStream.Read();
+                            if (currStat == 49)
+                                active[i++, j] = true;
+                            else
+                                active[i++, j] = false;
+                            if(i == 5)
+                            {
+                                i = 1;
+                                j++;
+                            }
+                        }
+                        myStream.Close();
+                    }
+                }
+            }
+            gameMode = status.NORMAL;
+            newGame(true);
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StreamWriter myStream;
+            using (var selectFileDialog = new SaveFileDialog())
+            {
+                selectFileDialog.DefaultExt = ".pg";
+                selectFileDialog.Filter = "Puzzle Game Save(*.pg)|*.pg*";
+                selectFileDialog.AddExtension = true;
+
+                if (selectFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    using (myStream = new StreamWriter(selectFileDialog.FileName))
+                    {
+                        for(int j = 1; j < 5; j++)
+                        {
+                            for (int i = 1; i < 5; i++)
+                            {
+                                if (active[i, j])
+                                    myStream.Write(1);
+                                else
+                                    myStream.Write(0);
+                            }
+                        }
+                        myStream.Close();
+                    }
+                }
             }
         }
     }

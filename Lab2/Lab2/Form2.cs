@@ -16,5 +16,27 @@ namespace Lab2
         {
             InitializeComponent();
         }
+        public int Life
+        {
+            get
+            {
+                return (int) this.numericUpDown1.Value;
+            }
+            set
+            {
+                this.numericUpDown1.Value = value;
+            }
+        }
+        public int Time
+        {
+            get
+            {
+                return (int) this.numericUpDown2.Value;
+            }
+            set
+            {
+                this.numericUpDown2.Value = value;
+            }
+        }
     }
 }
