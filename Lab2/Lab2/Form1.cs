@@ -257,6 +257,9 @@ namespace Lab2
         }
         private void edit()
         {
+            mainTimer.Stop();
+            progressBar1.Value = maxSec;
+            currSec = maxSec;
             this.newGameToolStripMenuItem.Enabled = false;
             this.openToolStripMenuItem.Enabled = false;
             this.settingsToolStripMenuItem.Enabled = false;
