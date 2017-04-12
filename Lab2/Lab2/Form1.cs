@@ -261,6 +261,7 @@ namespace Lab2
             this.openToolStripMenuItem.Enabled = false;
             this.settingsToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Enabled = true;
+            mainTimer.Stop();
             activeButtons = 0;
             guessedButtons = 0;
             lifes = maxLifes;
