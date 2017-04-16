@@ -16,26 +16,32 @@ namespace pwsg_Lab3
     {
         bool firstDone = false;
         bool secondDone = false;
+        bool firstBar = false;
+        bool secondBar = false;
+        static int currentImage = 0;
         Bitmap b1;
         Bitmap b2;
         public Form1()
         {
             InitializeComponent();
         }
-        private void ActualBlend()
+        private void ActualBlend(int bar)
         {
             double alfa = 0.5;
             Bitmap b1_t=null, b2_t=null;
             this.Invoke((MethodInvoker)delegate {
                 alfa = trackBar1.Value / 11.0;
-                b1_t = b1;
-                b2_t = b2;
+                b1_t = (Bitmap) b1.Clone();
+                b2_t = (Bitmap) b2.Clone();
             });
             Bitmap b3 = new Bitmap(Math.Min(b1_t.Width, b2_t.Width), Math.Min(b1_t.Height, b2_t.Height));
             for(int i = 0; i < b3.Width; i++)
             {
                 this.Invoke((MethodInvoker)delegate {
-                    progressBar1.Value = (int) (i*1.0 / b3.Width*1.0 * 100);
+                    if(bar == 1)
+                        progressBar1.Value = (int) (i*1.0 / (b3.Width-1)*1.0 * 100);
+                    else
+                        progressBar2.Value = (int)(i * 1.0 / (b3.Width-1) * 1.0 * 100);
                 });
                 for(int j = 0; j < b3.Height; j++)
                 {
@@ -54,16 +60,61 @@ namespace pwsg_Lab3
         }
         private void Blend()
         {
-            ActualBlend();
+            int b = -1;
+            this.Invoke((MethodInvoker)delegate
+            {
+                if (progressBar1.Value == 0 && firstBar == true)
+                    b = 1;
+                else
+                    b = 2;
+            });
+            ActualBlend(b);
             this.Invoke((MethodInvoker)delegate {
-                label1.Visible = false;
-                progressBar1.Visible = false;
-                progressBar1.Value = 0;
+                if (progressBar1.Value == 100)
+                {
+                    firstBar = false;
+                    if (!firstBar && !secondBar)
+                        label1.Visible = false;
+                    progressBar1.Visible = false;
+                    progressBar1.Value = 0;
+                    button1.Enabled = true;
+                }
+                else
+                {
+                    secondBar = false;
+                    if(!firstBar && !secondBar)
+                        label1.Visible = false;
+                    progressBar2.Visible = false;
+                    progressBar2.Value = 0;
+                    button1.Enabled = true;
+                }
             });
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            progressBar1.Visible = true;
+            if(firstBar && secondBar)
+            {
+                return;
+            }
+            if (firstBar || secondBar)
+            {
+                button1.Enabled = false;
+                if (firstBar)
+                {
+                    progressBar2.Visible = true;
+                    secondBar = true;
+                }
+                else
+                {
+                    progressBar1.Visible = true;
+                    firstBar = true;
+                }
+            }
+            else
+            {
+                progressBar1.Visible = true;
+                firstBar = true;
+            }
             label1.Visible = true;
             Thread thread = new Thread(Blend);
             thread.Start();

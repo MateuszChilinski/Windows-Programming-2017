@@ -18,5 +18,15 @@ namespace pwsg_Lab3
             Size = new Size(b.Width, b.Height);
             pictureBox1.Image = b;
         }
+
+        private void menuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void menuItem2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
