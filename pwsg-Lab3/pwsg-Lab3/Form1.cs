@@ -19,11 +19,16 @@ namespace pwsg_Lab3
         bool firstBar = false;
         bool secondBar = false;
         static int currentImage = 0;
+        LibraryManager myLib;
         Bitmap b1;
         Bitmap b2;
+        PictureBoxExtra selectedBox;
+        bool isSelected = false;
         public Form1()
         {
+            myLib = new LibraryManager("imgLibrary.xml");
             InitializeComponent();
+            myLib.initializePictures(flowLayoutPanel1);
         }
         private void ActualBlend(int bar)
         {
@@ -53,7 +58,7 @@ namespace pwsg_Lab3
                 }
             }
             this.Invoke((MethodInvoker)delegate {
-                var myForm = new Form2(b3);
+                var myForm = new Form2(myLib, b3);
                 myForm.Show();
             });
 
@@ -122,6 +127,7 @@ namespace pwsg_Lab3
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+
             using (var selectFileDialog = new OpenFileDialog())
             {
                 if (selectFileDialog.ShowDialog() == DialogResult.OK)
