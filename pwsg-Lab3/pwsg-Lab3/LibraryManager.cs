@@ -24,6 +24,7 @@ namespace pwsg_Lab3
         HashSet<KeyValuePair<string, Bitmap>> myImages = new HashSet<KeyValuePair<string, Bitmap>>();
         FlowLayoutPanel flowLayoutPanel;
         XmlDocument myFile;
+        public static int currentImage = 0;
         public LibraryManager(string p)
         {
             path = p;
@@ -69,6 +70,13 @@ namespace pwsg_Lab3
             KeyValuePair<string, Bitmap> tmp = new KeyValuePair<string, Bitmap>(fileName, map);
             myImages.Add(tmp);
             displayImage(tmp);
+        }
+        public void saveLibrary()
+        {
+            foreach (var img in myImages)
+            {
+                displayImage(img);
+            }
         }
 
         public void initializePictures(FlowLayoutPanel flp)
