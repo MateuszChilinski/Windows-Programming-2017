@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace pwsg_Lab3
 {
@@ -27,6 +29,11 @@ namespace pwsg_Lab3
         public LibraryManager(string p)
         {
             path = p;
+            
+            if(!File.Exists(path))
+            {
+                new XDocument(new XElement("data")).Save(path);
+            }
             myFile = new XmlDocument();
             myFile.Load(path);
             XmlNodeList query = myFile.SelectNodes("data/Image/@path");
