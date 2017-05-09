@@ -15,28 +15,41 @@ namespace pwsg_Lab3
         bool saved = false;
         string filePath;
         LibraryManager myLib;
+        Bitmap myBitmap;
         public Form2(LibraryManager lib, Bitmap b)
         {
             myLib = lib;
             InitializeComponent();
             Size = new Size(b.Width, b.Height);
+            myBitmap = b;
             pictureBox1.Image = b;
         }
 
         private void menuItem1_Click(object sender, EventArgs e)
         {
-            filePath = "sth";
+            filePath = "image"+LibraryManager.currentImage;
+            SaveFileDialog save = new SaveFileDialog();
+            save.FileName = filePath;
+            save.DefaultExt = ".bmp";
+            save.Filter = "Bitmap (*.bmp)|*.bmp";
+            if (save.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                myBitmap.Save(save.FileName);
+                LibraryManager.currentImage++;
+                saved = true;
+            }
         }
 
         private void menuItem2_Click(object sender, EventArgs e)
         {
             if(!saved)
             {
-                //error lol displaybox
+                MessageBox.Show("You need to save the picture before adding it to the library.", "Error!",
+         MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                myLib.addNewImage(new Bitmap(pictureBox1.Image), filePath);
+                myLib.addNewImage(myBitmap, filePath);
             }
         }
     }

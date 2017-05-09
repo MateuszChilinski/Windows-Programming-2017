@@ -18,7 +18,6 @@ namespace pwsg_Lab3
         bool secondDone = false;
         bool firstBar = false;
         bool secondBar = false;
-        static int currentImage = 0;
         LibraryManager myLib;
         Bitmap b1;
         Bitmap b2;
