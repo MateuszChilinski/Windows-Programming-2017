@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:lab5"
         mc:Ignorable="d"
         Title="Shop Manager" Height="600" Width="800" MinHeight="500" MinWidth="500">
+    
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top">
             <MenuItem Header="File">
@@ -15,24 +16,30 @@
                 <MenuItem Header="Exit" HorizontalAlignment="Left" Width="145" Click="MenuItem_Click_1"/>
             </MenuItem>
             <MenuItem Header="Products">
-                <MenuItem Header="Add Products" HorizontalAlignment="Left" Width="145" Click="MenuItem_Click"/>
-                <MenuItem Header="Clear products" HorizontalAlignment="Left" Width="145" IsEnabled="False"/>
+                <MenuItem Header="Add Products" Click="MenuItem_Click"/>
+                <MenuItem Header="Clear products" Click="MenuItem_Clear"/>
             </MenuItem>
             <MenuItem Header="About" Click="MenuItem_Click_2"/>
         </Menu>
-        <TabControl x:Name="tabControl" Margin="0,21,0,0">
+        <TabControl x:Name="tabControl" Margin="0,21,0,0" Background="AliceBlue">
             <TabItem Header="Shop&#xD;&#xA;" Height="26" VerticalAlignment="Top" IsSelected="True" Margin="10,0,-22,0">
-                <Grid Background="#FFE5E5E5">
+                <Grid>
                     <ListBox x:Name="listBox" AlternationCount="2">
+                        <ListBox.Background>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#FFFFBD7C" Offset="0"/>
+                                <GradientStop Color="#FFD1FF8C" Offset="1"/>
+                            </RadialGradientBrush>
+                        </ListBox.Background>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Style.Triggers>
                                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                        <Setter Property="Background" Value="#19f39611"></Setter>
+                                        <Setter Property="Background" Value="PaleVioletRed"></Setter>
                                     </Trigger>
                                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                        <Setter Property="Background" Value="#19000000"></Setter>
+                                        <Setter Property="Background" Value="CadetBlue"></Setter>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -67,7 +74,14 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Warehouse" Height="26" VerticalAlignment="Top" Margin="-8,0,8,0">
-                <DataGrid Name="dg" />
+                <DataGrid Name="dg">
+                    <DataGrid.Background>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FFFFBD7C" Offset="0"/>
+                            <GradientStop Color="#FFD1FF8C" Offset="1"/>
+                        </RadialGradientBrush>
+                    </DataGrid.Background>
+                </DataGrid>
             </TabItem>
         </TabControl>
 

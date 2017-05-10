@@ -21,15 +21,13 @@ namespace lab5
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Item> items = new List<Item>();
+        ObservableCollection<Item> items = new ObservableCollection<Item>();
         public MainWindow()
         {
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            items.Add(new Item() { Title = "Computer", Description = "The program '[6132] lab5.vshost.exe: Program Trace' has exited with code 0 (0x0).", Category = FieldTypes.Electronics, Price = 2499.0 });
-            items.Add(new Item() { Title = "Apple", Description = "The thread 0x1bcc has exited with code 0 (0x0).", Category = FieldTypes.Food, Price = 1.60 });
             dg.ItemsSource = items;
-            listBox.ItemsSource = items;
+            listBox.ItemsSource = new ListCollectionView(items);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -39,7 +37,12 @@ namespace lab5
             dg.Items.Refresh();
             listBox.Items.Refresh();
         }
-
+        private void MenuItem_Clear(object sender, RoutedEventArgs e)
+        {
+            items.Clear();
+            dg.Items.Refresh();
+            listBox.Items.Refresh();
+        }
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.Close();
