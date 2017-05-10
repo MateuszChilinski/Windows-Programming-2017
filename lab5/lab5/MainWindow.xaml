@@ -30,56 +30,112 @@
             </TabControl.Background>
             <TabItem Header="Shop&#xD;&#xA;" Height="26" VerticalAlignment="Top" IsSelected="True" >
                 <Grid>
-                    <ListBox x:Name="listBox" AlternationCount="2" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Style.Triggers>
-                                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                        <Setter Property="Background" Value="IndianRed"></Setter>
-                                    </Trigger>
-                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                        <Setter Property="Background" Value="DeepSkyBlue"></Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="80"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid Grid.Column="0" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="3*"/>
-                                            <RowDefinition Height="2*"/>
-                                            <RowDefinition Height="2*"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock FontWeight="Bold" FontSize="20" Text="{Binding Title}" Grid.Row="0" />
-                                        <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" />
-                                        <TextBlock Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                <GradientStop Color="#FF41BBCF" Offset="0"/>
+                                <GradientStop Color="#FFCEF8FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock FontWeight="Bold" FontSize="20" Text="Search" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <CheckBox Content="By name" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1"/>
+                        <TextBox IsEnabled="False" Grid.Row="2" Margin="10,2,10,2" />
+                        <Separator Grid.Row="3" Margin="5,0,5,0" />
+                        <CheckBox Content="By price" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="4"/>
+                        <Grid Grid.Row="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="From:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,2,10,2" />
+                            <TextBlock Text="To:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,2,10,2" />
+                            <TextBox Grid.Row="0" Text="0" Grid.Column="1" IsEnabled="False" Margin="10,2,10,2" Padding="0,3,0,0"/>
+                            <TextBox Grid.Row="1" Text="10000" Grid.Column="1" IsEnabled="False" Margin="10,3,10,2" Padding="0,3,0,0" />
+                        </Grid>
+                        <Separator Grid.Row="6" Margin="5,0,5,0" />
+                        <CheckBox Content="By category" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="7"/>
+                        <ComboBox Grid.Row="8" Margin="10,2,10,2">
+                            <ComboBoxItem IsSelected="True">Food</ComboBoxItem>
+                            <ComboBoxItem>Electronics</ComboBoxItem>
+                            <ComboBoxItem>Cloths</ComboBoxItem>
+                        </ComboBox>
+                        <Button Content="Search" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" Grid.Row="9" Padding="40,5,40,5"/>
+                        <Button Content="Show All" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" Grid.Row="10" Padding="35,5,35,5"/>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <ListBox x:Name="listBox" AlternationCount="2" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                            <Setter Property="Background" Value="IndianRed"></Setter>
+                                        </Trigger>
+                                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                            <Setter Property="Background" Value="DeepSkyBlue"></Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="3*"/>
+                                                <RowDefinition Height="2*"/>
+                                                <RowDefinition Height="2*"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock FontWeight="Bold" FontSize="20" Text="{Binding Title}" Grid.Row="0" />
+                                            <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" />
+                                            <TextBlock Grid.Row="2">
                                         <Run FontWeight="Bold" Text="Category:"/>
                                         <Run Text="{Binding Category}"/>
-                                        </TextBlock>
-                                    </Grid>
-                                    <Grid Grid.Column="1" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            </TextBlock>
+                                        </Grid>
+                                        <Grid Grid.Column="1" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                                             <Run FontWeight="Bold" Text="Price:"/>
                                             <Run Text="{Binding Price}"/>
-                                        </TextBlock>
+                                            </TextBlock>
+                                        </Grid>
+                                        <Grid Grid.Column="2" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="Button_Click" Grid.Column="2" Margin="10,0,0,0">
+                                                <Image Stretch="None" Source="add.png" ></Image>
+                                            </Button>
+                                        </Grid>
                                     </Grid>
-                                    <Grid Grid.Column="2" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="Button_Click" Grid.Column="2" Margin="10,0,0,0">
-                                            <Image Stretch="None" Source="add.png" ></Image>
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Warehouse" Height="26" VerticalAlignment="Top">
