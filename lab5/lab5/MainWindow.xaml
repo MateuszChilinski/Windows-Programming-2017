@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:lab5"
         mc:Ignorable="d"
         Title="Shop Manager" Height="600" Width="800" MinHeight="500" MinWidth="500">
-    
+
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top">
             <MenuItem Header="File">
@@ -21,67 +21,73 @@
             </MenuItem>
             <MenuItem Header="About" Click="MenuItem_Click_2"/>
         </Menu>
-        <TabControl x:Name="tabControl" Margin="0,21,0,0" Background="AliceBlue">
-            <TabItem Header="Shop&#xD;&#xA;" Height="26" VerticalAlignment="Top" IsSelected="True" Margin="10,0,-22,0">
+        <TabControl x:Name="tabControl" Margin="0,21,0,0">
+            <TabControl.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFFFBD7C" Offset="0"/>
+                    <GradientStop Color="#FFD1FF8C" Offset="1"/>
+                </RadialGradientBrush>
+            </TabControl.Background>
+            <TabItem Header="Shop&#xD;&#xA;" Height="26" VerticalAlignment="Top" IsSelected="True" >
                 <Grid>
-                    <ListBox x:Name="listBox" AlternationCount="2">
-                        <ListBox.Background>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#FFFFBD7C" Offset="0"/>
-                                <GradientStop Color="#FFD1FF8C" Offset="1"/>
-                            </RadialGradientBrush>
-                        </ListBox.Background>
+                    <ListBox x:Name="listBox" AlternationCount="2" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Style.Triggers>
                                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                        <Setter Property="Background" Value="PaleVioletRed"></Setter>
+                                        <Setter Property="Background" Value="IndianRed"></Setter>
                                     </Trigger>
                                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                        <Setter Property="Background" Value="CadetBlue"></Setter>
+                                        <Setter Property="Background" Value="DeepSkyBlue"></Setter>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid  Margin="0,2" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="80"/>
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="3*"/>
-                                        <RowDefinition Height="1*"/>
-                                        <RowDefinition Height="1*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock FontSize="20" Text="{Binding Title}" Grid.Column="0" Grid.Row="0" />
-                                    <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" />
-                                    <TextBlock HorizontalAlignment="Right" Text="{Binding Price}" Grid.Column="1" Grid.Row="1" />
-                                    <Button Click="Button_Click" Grid.Column="2" Grid.Row="1">
-                                        <TextBlock>Add to cart</TextBlock>
-                                    </Button>
-                                    <TextBlock Text="{Binding Category}" Grid.Column="0" Grid.Row="2" />
+                                    <Grid Grid.Column="0" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3*"/>
+                                            <RowDefinition Height="2*"/>
+                                            <RowDefinition Height="2*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock FontWeight="Bold" FontSize="20" Text="{Binding Title}" Grid.Row="0" />
+                                        <TextBlock Text="{Binding Description}" Grid.Column="0" Grid.Row="1" />
+                                        <TextBlock Grid.Row="2">
+                                        <Run FontWeight="Bold" Text="Category:"/>
+                                        <Run Text="{Binding Category}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Column="1" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <Run FontWeight="Bold" Text="Price:"/>
+                                            <Run Text="{Binding Price}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Column="2" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="Button_Click" Grid.Column="2" Margin="10,0,0,0">
+                                            <Image Stretch="None" Source="add.png" ></Image>
+                                        </Button>
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Cart" Margin="110,0,-114,0" IsEnabled="False">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-            <TabItem Header="Warehouse" Height="26" VerticalAlignment="Top" Margin="-8,0,8,0">
-                <DataGrid Name="dg">
-                    <DataGrid.Background>
-                        <RadialGradientBrush>
-                            <GradientStop Color="#FFFFBD7C" Offset="0"/>
-                            <GradientStop Color="#FFD1FF8C" Offset="1"/>
-                        </RadialGradientBrush>
-                    </DataGrid.Background>
+            <TabItem Header="Warehouse" Height="26" VerticalAlignment="Top">
+                <DataGrid Name="dg" VerticalAlignment="Top" HorizontalAlignment="Stretch">
                 </DataGrid>
+            </TabItem>
+            <TabItem Header="Cart" IsEnabled="False">
+                <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>
 

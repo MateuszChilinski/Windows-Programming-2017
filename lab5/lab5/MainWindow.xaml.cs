@@ -36,6 +36,7 @@ namespace lab5
             items.Add(new Item() { Title = "Apple", Description = "The thread 0x1bcc has exited with code 0 (0x0).", Category = FieldTypes.Food, Price = 1.60 });
             dg.Items.Refresh();
             listBox.Items.Refresh();
+            
         }
         private void MenuItem_Clear(object sender, RoutedEventArgs e)
         {
