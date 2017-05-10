@@ -58,12 +58,61 @@ namespace lab5
         {
             MessageBox.Show("Added to cart!", "Confirmation", MessageBoxButton.OK);
         }
+
+        private void Name_Checked(object sender, RoutedEventArgs e)
+        {
+            name.IsEnabled = true;
+        }
+        private void Name_UnChecked(object sender, RoutedEventArgs e)
+        {
+            name.IsEnabled = false;
+        }
+        private void Price_Checked(object sender, RoutedEventArgs e)
+        {
+            to.IsEnabled = true;
+            fromT.IsEnabled = true;
+        }
+        private void Price_UnChecked(object sender, RoutedEventArgs e)
+        {
+            to.IsEnabled = false;
+            fromT.IsEnabled = false;
+        }
+        private void Category_Checked(object sender, RoutedEventArgs e)
+        {
+            category.IsEnabled = true;
+
+        }
+        private void Category_UnChecked(object sender, RoutedEventArgs e)
+        {
+            category.IsEnabled = false;
+        }
+        private void Search(object sender, RoutedEventArgs e)
+        {
+            if(to.IsEnabled == true)
+            {
+                if(!int.TryParse(to.Text, out int n) || !int.TryParse(fromT.Text, out int n2))
+                {
+                    MessageBox.Show("Invaild format of price!", "Error", MessageBoxButton.OK);
+                    return;
+                }
+            }
+            var query = from item in items
+                        where (item.Title.ToLower().Contains(name.Text.ToLower()) || name.Text == "" || name.IsEnabled == false) &&
+                        ((item.Price <= int.Parse(to.Text) && item.Price >= int.Parse(fromT.Text)) || to.IsEnabled == false) &&
+                        ((category.IsEnabled == false) || category.Text == item.Category.ToString())
+                        select item;
+            listBox.ItemsSource = query;
+        }
+        private void ShowAll(object sender, RoutedEventArgs e)
+        {
+            listBox.ItemsSource = new ListCollectionView(items);
+        }
     }
     public enum FieldTypes
     {
         Electronics,
         Food,
-        SomeRandomShit
+        Clothes
     }
     public class Item
     {
