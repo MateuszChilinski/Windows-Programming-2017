@@ -19,12 +19,14 @@ namespace pwsg4
     /// </summary>
     public partial class ImageWindow : Window
     {
-        public ImageWindow(BitmapImage im)
+        public ImageWindow(It im)
         {
+            BitmapImage bi = new BitmapImage(new Uri(im.Src));
             InitializeComponent();
-            mainImage.Source = im;
-            this.Width = im.Width;
-            this.Height = im.Height;
+            this.Title = im.Name;
+            mainImage.Source = bi;
+            this.Width = bi.Width;
+            this.Height = bi.Height;
         }
     }
 }

@@ -5,8 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:pwsg4"
         mc:Ignorable="d"
-        Title="Image Browser" Height="600" Width="800" MinWidth="500" MinHeight="500">
-
+        Title="Image Browser" Height="600" Width="800" MinWidth="500" MinHeight="500" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Storyboard x:Key="in">
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1.2"/>
+            <DoubleAnimation BeginTime="0:0:5.0" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.5"/>
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:5.5" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Hidden</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="out">
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2"/>
+            <DoubleAnimation BeginTime="0:0:5.0" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1.5"/>
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:5.5" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Hidden</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
    <Grid>
        
         <Grid Background="#FFC9B1B1">
@@ -20,51 +57,144 @@
                         <MenuItem Header="Open file" HorizontalAlignment="Left" Click="OpenFile"/>
                         <MenuItem Header="Open folder" HorizontalAlignment="Left" Click="OpenFolder"/>
                         <Separator HorizontalAlignment="Left" Width="145"/>
-                        <MenuItem Header="Exit" HorizontalAlignment="Left"/>
+                        <MenuItem Click="Exit" Header="Exit" HorizontalAlignment="Left"/>
                     </MenuItem>
-                    <MenuItem Header="About"/>
+                    <MenuItem Header="About" Click="About"/>
                 </Menu>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <Slider Name="sli" Thumb.DragCompleted="Slider_DragCompleted"  VerticalAlignment="Center" Value="30" Maximum="100"></Slider>
+                <Grid Grid.Row="0" Grid.Column="2">
+                    <Slider Name="sli" Thumb.DragDelta="Slider_DragCompleted"  VerticalAlignment="Center" Value="30" Maximum="250" Minimum="50" SmallChange="1"></Slider>
                 </Grid>
-                <Border Margin="5,5,5,5" Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-                    <Grid Background="#FF8b9a59">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="100"/>
-                            <RowDefinition Height="100"/>
-                            <RowDefinition Height="100"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Ellipse Mouse.MouseDown="OpenFile" Mouse.MouseEnter="e3_MouseEnter" Mouse.MouseLeave="e3_MouseLeave" Name="e1" Width="100" Height="70" >
-                            </Ellipse>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Open file"/>
+                <GridSplitter Grid.Row="1" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="300"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="#FF8b9a59" Margin="5,5,5,5" Grid.Row="0" BorderBrush="Black" BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="100"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid Width="100" Height="70">
+                                    <Ellipse Mouse.MouseUp="OpenFile" Name="e1" Width="100" Height="70" >
+                                        <Ellipse.Style>
+                                            <Style TargetType="{x:Type Ellipse}">
+                                                <Setter Property="Fill">
+                                                    <Setter.Value>
+                                                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                            <GradientStop Color="White" Offset="0.5" />
+                                                            <GradientStop Color="#FF8b9a59" Offset="1" />
+                                                        </RadialGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Fill">
+                                                            <Setter.Value>
+                                                                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                                    <GradientStop Color="White" Offset="0.5" />
+                                                                    <GradientStop Color="Yellow" Offset="0" />
+                                                                    <GradientStop Color="#FF8b9a59" Offset="1" />
+                                                                </RadialGradientBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    <TextBlock Margin="25,0,0,0" IsHitTestVisible="False" VerticalAlignment="Center" Text="Open file"/>
+                                </Grid>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Ellipse Mouse.MouseUp="OpenFolder" Name="e2" Width="100" Height="70" >
+                                    <Ellipse.Style>
+                                        <Style TargetType="{x:Type Ellipse}">
+                                            <Setter Property="Fill">
+                                                <Setter.Value>
+                                                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                        <GradientStop Color="White" Offset="0.5" />
+                                                        <GradientStop Color="#FF8b9a59" Offset="1" />
+                                                    </RadialGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Fill">
+                                                        <Setter.Value>
+                                                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                                <GradientStop Color="White" Offset="0.5" />
+                                                                <GradientStop Color="Yellow" Offset="0" />
+                                                                <GradientStop Color="#FF8b9a59" Offset="1" />
+                                                            </RadialGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Open folder"/>
+                            </Grid>
+                            <Grid Name="g1" Grid.Row="2">
+                                <Ellipse Mouse.MouseUp="Exit" Name="e3" Width="100" Height="70" >
+                                    <Ellipse.Style>
+                                        <Style TargetType="{x:Type Ellipse}">
+                                            <Setter Property="Fill">
+                                                <Setter.Value>
+                                                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                        <GradientStop Color="White" Offset="0.5" />
+                                                        <GradientStop Color="#FF8b9a59" Offset="1" />
+                                                    </RadialGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Fill">
+                                                        <Setter.Value>
+                                                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                                <GradientStop Color="White" Offset="0.5" />
+                                                                <GradientStop Color="Yellow" Offset="0" />
+                                                                <GradientStop Color="#FF8b9a59" Offset="1" />
+                                                            </RadialGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Exit"/>
+                            </Grid>
                         </Grid>
-                        <Grid Grid.Row="1">
-                            <Ellipse Mouse.MouseEnter="e3_MouseEnter" Mouse.MouseLeave="e3_MouseLeave" Name="e2" Width="100" Height="70" >
-                            </Ellipse>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Open folder"/>
-                        </Grid>
-                        <Grid Name="g1" Grid.Row="2">
-                            <Ellipse Mouse.MouseEnter="e3_MouseEnter" Mouse.MouseLeave="e3_MouseLeave" Name="e3" Width="100" Height="70" >
-                            </Ellipse>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Exit"/>
-                        </Grid>
-                    </Grid>
-                </Border>
-                <Border Margin="5,5,5,5" Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                    </Border>
+                    <Border Background="#FF8b9a59" Margin="5,5,5,5" Grid.Row="1" BorderBrush="Black" BorderThickness="1">
+                        <CheckBox IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Content="Show tree"/>
+                    </Border>
+                    <Border Opacity="1" Visibility="Visible" Name="tree" Margin="5,5,5,5" Grid.Row="2" BorderBrush="Black" BorderThickness="1" IsEnabled="True">
+                        <TreeView IsEnabled="True" Name="treeView" Background="#FF8b9a59">
+                        </TreeView>
+                    </Border>
+                </Grid>
 
+                <Border Margin="5,5,5,5" Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
                     <Grid Background="#FF49A8DE">
-                        <ListView Background="#FF49A8DE" x:Name="listBox" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top">
+                        <ListView VerticalAlignment="Stretch" Background="#FF49A8DE" x:Name="listBox" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Margin="0" />
@@ -72,16 +202,21 @@
                             </ListView.ItemsPanel>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Width="{Binding X}" Height="{Binding Y}"  Background="#FF49A8DE" >
-                                        <Grid Margin="10, 10, 10, 10" Background="Yellow">
+                                    <Border Mouse.MouseDown="OpenFile2" Background="White" >
+                                        <Border.Effect>
+                                            <DropShadowEffect/>
+                                        </Border.Effect>
+                                        <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="9*"/>
-                                                <RowDefinition Height="2*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="30"/>
                                             </Grid.RowDefinitions>
-                                            <Image Margin="10,10,10,10" Grid.Row="0" Mouse.MouseDown="OpenFile2" Source="{Binding Src}"></Image>
-                                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="{Binding Name}"/>
+                                            <Grid Name="imgGrid" Grid.Row="0">
+                                                <Image Width="{Binding X}" Height="{Binding Y}"   Margin="10,5,10,5" Stretch="Fill" Source="{Binding Src}"></Image>
+                                            </Grid>
+                                            <TextBlock Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Center" Text="{Binding Name}"/>
                                         </Grid>
-                                    </Grid>
+                                    </Border>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
