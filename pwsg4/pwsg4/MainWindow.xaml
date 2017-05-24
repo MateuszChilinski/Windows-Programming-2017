@@ -7,6 +7,40 @@
         mc:Ignorable="d"
         Title="Image Browser" Height="600" Width="800" MinWidth="500" MinHeight="500" WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border>
+                                <Ellipse Width="90" Height="60" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Border.Effect>
+                                    <BlurEffect Radius="30"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border>
+                                <Ellipse Name="changeEllipseColor" Width="60" Height="35" Fill="White"/>
+                                <Border.Effect>
+                                    <BlurEffect Radius="25"/>
+                                </Border.Effect>
+                            </Border>
+                            <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="changeEllipseColor" Property="Fill" Value="Yellow"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="changeEllipseColor" Property="Fill" Value="Cyan"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Storyboard x:Key="in">
             <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0">
@@ -90,96 +124,19 @@
                                 <RowDefinition Height="100"/>
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
-                                <Grid Width="100" Height="70">
-                                    <Ellipse Mouse.MouseUp="OpenFile" Name="e1" Width="100" Height="70" >
-                                        <Ellipse.Style>
-                                            <Style TargetType="{x:Type Ellipse}">
-                                                <Setter Property="Fill">
-                                                    <Setter.Value>
-                                                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                                            <GradientStop Color="White" Offset="0.5" />
-                                                            <GradientStop Color="#FF8b9a59" Offset="1" />
-                                                        </RadialGradientBrush>
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Fill">
-                                                            <Setter.Value>
-                                                                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                                                    <GradientStop Color="White" Offset="0.5" />
-                                                                    <GradientStop Color="Yellow" Offset="0" />
-                                                                    <GradientStop Color="#FF8b9a59" Offset="1" />
-                                                                </RadialGradientBrush>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Ellipse.Style>
-                                    </Ellipse>
-                                    <TextBlock Margin="25,0,0,0" IsHitTestVisible="False" VerticalAlignment="Center" Text="Open file"/>
-                                </Grid>
+                                <Button Style="{StaticResource ButtonStyle}" Click="OpenFile">
+                                    <TextBlock IsHitTestVisible="False" VerticalAlignment="Center" Text="Open file"/>
+                                </Button>
                             </Grid>
                             <Grid Grid.Row="1">
-                                <Ellipse Mouse.MouseUp="OpenFolder" Name="e2" Width="100" Height="70" >
-                                    <Ellipse.Style>
-                                        <Style TargetType="{x:Type Ellipse}">
-                                            <Setter Property="Fill">
-                                                <Setter.Value>
-                                                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                                        <GradientStop Color="White" Offset="0.5" />
-                                                        <GradientStop Color="#FF8b9a59" Offset="1" />
-                                                    </RadialGradientBrush>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Fill">
-                                                        <Setter.Value>
-                                                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                                                <GradientStop Color="White" Offset="0.5" />
-                                                                <GradientStop Color="Yellow" Offset="0" />
-                                                                <GradientStop Color="#FF8b9a59" Offset="1" />
-                                                            </RadialGradientBrush>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
-                                <TextBlock IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Open folder"/>
+                                <Button Style="{StaticResource ButtonStyle}" Click="OpenFolder">
+                                    <TextBlock IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Open folder"/>
+                                </Button>
                             </Grid>
                             <Grid Name="g1" Grid.Row="2">
-                                <Ellipse Mouse.MouseUp="Exit" Name="e3" Width="100" Height="70" >
-                                    <Ellipse.Style>
-                                        <Style TargetType="{x:Type Ellipse}">
-                                            <Setter Property="Fill">
-                                                <Setter.Value>
-                                                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                                        <GradientStop Color="White" Offset="0.5" />
-                                                        <GradientStop Color="#FF8b9a59" Offset="1" />
-                                                    </RadialGradientBrush>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Fill">
-                                                        <Setter.Value>
-                                                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                                                <GradientStop Color="White" Offset="0.5" />
-                                                                <GradientStop Color="Yellow" Offset="0" />
-                                                                <GradientStop Color="#FF8b9a59" Offset="1" />
-                                                            </RadialGradientBrush>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
-                                <TextBlock IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Exit"/>
+                                <Button Style="{StaticResource ButtonStyle}" Click="Exit">
+                                    <TextBlock IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Exit"/>
+                                </Button>
                             </Grid>
                         </Grid>
                     </Border>

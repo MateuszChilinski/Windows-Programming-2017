@@ -7,6 +7,49 @@
         mc:Ignorable="d"
         Title="ImageWindow" Height="300" Width="300" ResizeMode="NoResize">
     <Grid>
-        <Image Name="mainImage" Stretch="Fill"></Image>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <StackPanel>
+                <Border Background="LightGray" Margin="5,5,5,5" Grid.Row="0" VerticalAlignment="Top" BorderBrush="Gray" BorderThickness="3">
+                <Expander Margin="10,10,10,10" Header="Image Information"  VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid Height="200">
+                        
+                    </Grid>
+                </Expander>
+            </Border>
+            <Border Background="LightGreen" Margin="5,5,5,5" Grid.Row="0" VerticalAlignment="Top" BorderBrush="Green" BorderThickness="3">
+                <Expander Margin="10,10,10,10" Header="Plugins" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid Height="100">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox Grid.Row="0" Height="25" Width="100">
+                                <ComboBoxItem IsSelected="True">Czerwony</ComboBoxItem>
+                                <ComboBoxItem>Zielony</ComboBoxItem>
+                                <ComboBoxItem>Niebieski</ComboBoxItem>
+                                <ComboBoxItem>Żółty</ComboBoxItem>
+                                <ComboBoxItem>Czarny</ComboBoxItem>
+                            </ComboBox>
+                        <Button Content="Use Plugin" Grid.Row="1" Width="100" Height="30"  />
+                    </Grid>
+                </Expander>
+            </Border>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header = "Save"/>
+                <MenuItem Header = "Reset"/>
+                <Separator/>
+                <MenuItem Header = "Exit" Click="MenuItem_Click"/>
+            </ContextMenu>
+            </Grid.ContextMenu>
+            <Image Name="mainImage" Stretch="Fill"></Image>
+        </Grid>
     </Grid>
 </Window>

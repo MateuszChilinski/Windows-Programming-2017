@@ -19,14 +19,27 @@ namespace pwsg4
     /// </summary>
     public partial class ImageWindow : Window
     {
+        BitmapImage original;
+        BitmapImage current;
         public ImageWindow(It im)
         {
             BitmapImage bi = new BitmapImage(new Uri(im.Src));
             InitializeComponent();
             this.Title = im.Name;
-            mainImage.Source = bi;
-            this.Width = bi.Width;
+            original = bi;
+            current = original.Clone();
+            this.mainImage.Source = current;
+            this.Width = bi.Width+200;
             this.Height = bi.Height;
+            if (Width+100 > SystemParameters.PrimaryScreenWidth)
+                Width = SystemParameters.PrimaryScreenWidth-100;
+            if (Height+100 > SystemParameters.PrimaryScreenHeight)
+                Height = SystemParameters.PrimaryScreenHeight-100;
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
