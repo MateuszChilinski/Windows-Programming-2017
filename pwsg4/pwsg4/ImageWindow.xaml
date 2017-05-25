@@ -46,14 +46,9 @@
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
-                            <ComboBox Grid.Row="0" Height="25" Width="100">
-                                <ComboBoxItem IsSelected="True">Czerwony</ComboBoxItem>
-                                <ComboBoxItem>Zielony</ComboBoxItem>
-                                <ComboBoxItem>Niebieski</ComboBoxItem>
-                                <ComboBoxItem>Żółty</ComboBoxItem>
-                                <ComboBoxItem>Czarny</ComboBoxItem>
+                            <ComboBox Name="cb" Grid.Row="0" Height="25" Width="100">
                             </ComboBox>
-                        <Button Content="Use Plugin" Grid.Row="1" Width="100" Height="30"  />
+                        <Button Content="Use Plugin" Click="Button_Click" Grid.Row="1" Width="100" Height="30"  />
                     </Grid>
                 </Expander>
             </Border>

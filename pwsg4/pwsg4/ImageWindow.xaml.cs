@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using PluginContracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
+using System.Drawing;
 namespace pwsg4
 {
     /// <summary>
@@ -23,6 +24,7 @@ namespace pwsg4
     {
         BitmapImage original;
         BitmapImage current;
+        List<IPlugin> intf = new List<IPlugin>();
         public ImageWindow(It im)
         {
             Uri n = new Uri(im.Src);
@@ -42,12 +44,17 @@ namespace pwsg4
             t2.Text = current.Width.ToString() + " px";
             t3.Text = current.Height.ToString() + " px";
             t4.Text = File.GetCreationTime(im.Src).ToString();
+            cb.ItemsSource = intf;
+            cb.DisplayMemberPath = "Name";
+            cb.SelectedValuePath = "Name";
             loadPlugins();
+            cb.SelectedItem = intf[0];
+            cb.Items.Refresh();
         }
 
         private void loadPlugins()
         {
-            HashSet<IPlugin> intf = new HashSet<IPlugin>();
+            intf.Clear();
             String path = System.AppDomain.CurrentDomain.BaseDirectory;
             string[] pluginFiles = Directory.GetFiles(path, "*.dll");
             //loop through the found dlls and load them 
@@ -59,27 +66,29 @@ namespace pwsg4
 
                 //now find the classes that implement the interface IMyPluginInterface and get an object of that type 
 
-                foreach(var z in plugin.DefinedTypes)
+                foreach (var z in plugin.DefinedTypes)
                 {
-                    foreach(var i in z.ImplementedInterfaces)
+                    foreach (var i in z.ImplementedInterfaces)
                     {
-                        if(i.Name == "IPlugin" && z.Name != "IPlugin")
+                        if (i.Name == "IPlugin")
                         {
-                            IPlugin myPlugin = (IPlugin) Activator.CreateInstance(z);
+                            IPlugin myPlugin = (IPlugin)Activator.CreateInstance(z);
+                            intf.Add(myPlugin);
                         }
                     }
                 }
             }
+
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
         void SaveUsingEncoder(string fileName, BitmapEncoder encoder)
         {
             BitmapFrame frame = BitmapFrame.Create(current);
             encoder.Frames.Add(frame);
-
+            
             using (var stream = File.Create(fileName))
             {
                 encoder.Save(stream);
@@ -118,12 +127,14 @@ namespace pwsg4
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
             current = original.Clone();
+            mainImage.Source = current;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var z = (IPlugin)cb.SelectedItem;
+            current = z.Do(original);
+            mainImage.Source = current;
         }
     }
-    public interface IPlugin
-    {
-        string Name { get; }
-        BitmapImage Do(BitmapImage image);
-    }
-
 }
